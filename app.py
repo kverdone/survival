@@ -48,6 +48,14 @@ def index():
 def user(name):
     return '<h1>Hello {}</h1>'.format(name)
 
+@app.route('/week/<int:week_id>')
+@login_required
+def week(week_id):
+    if not current_user.is_admin():
+        flash('You do not have permission.')
+        return redirect(url_for('index'))
+    return render_template('week.html')
+
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if current_user.is_authenticated:
