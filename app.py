@@ -18,6 +18,7 @@ app.config.from_object(config[os.getenv('FLASK_CONFIG') or 'default'])
 db = SQLAlchemy(app)
 
 from models import *
+from forms import *
 
 ###############################
 # MODELS
@@ -38,12 +39,9 @@ def get_current_user():
 def admin_required(f):
     @wraps(f)
     def wrap(*args, **kwargs):
-        print 'In admin_required:', current_user
         if current_user.is_admin():
-            print 'Successful check'
             return f(*args, **kwargs)
         else:
-            print 'failed check'
             flash('You do not have permission.')
             return redirect(url_for('index')) 
     return wrap

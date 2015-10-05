@@ -1,7 +1,5 @@
 from app import db, bcrypt
 #from flask_wtf import Form
-from wtforms import Form, TextField, PasswordField
-from wtforms.validators import InputRequired
 from datetime import datetime
 
 
@@ -42,8 +40,3 @@ class User(db.Model):
  
     def get_id(self):
         return unicode(self.id)
-
-
-class LoginForm(Form):
-    username = TextField('Username', [InputRequired()])
-    password = PasswordField('Password', [InputRequired()])
