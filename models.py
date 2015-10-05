@@ -26,7 +26,7 @@ class User(db.Model):
         self.admin = admin
 
     def __repr__(self):
-        return '<User #{}>\t{}\t{}'.format(self.id, self.username, self.password)
+        return '<User #{}>\t{}\t{}'.format(self.id, self.username, self.admin)
 
     def is_admin(self):
         return self.admin

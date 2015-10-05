@@ -3,6 +3,7 @@ from flask.ext.sqlalchemy import SQLAlchemy
 from flask.ext.bcrypt import Bcrypt
 from flask.ext.login import LoginManager, current_user, login_user, logout_user, login_required
 from config import config
+from functools import wraps
 
 app = Flask(__name__)
 bcrypt = Bcrypt(app)
@@ -34,6 +35,19 @@ def load_user(id):
 def get_current_user():
     g.user = current_user
 
+def admin_required(f):
+    @wraps(f)
+    def wrap(*args, **kwargs):
+        print 'In admin_required:', current_user
+        if current_user.is_admin():
+            print 'Successful check'
+            return f(*args, **kwargs)
+        else:
+            print 'failed check'
+            flash('You do not have permission.')
+            return redirect(url_for('index')) 
+    return wrap
+
 
 ###############################
 # ROUTES
@@ -46,15 +60,26 @@ def index():
 
 @app.route('/user/<name>')
 def user(name):
-    return '<h1>Hello {}</h1>'.format(name)
+    return '<h1>Hello {}</h1>'.format(name) + str(current_user)
 
 @app.route('/week/<int:week_id>')
 @login_required
+@admin_required
 def week(week_id):
-    if not current_user.is_admin():
-        flash('You do not have permission.')
-        return redirect(url_for('index'))
     return render_template('week.html')
+
+@app.route('/admin')
+@login_required
+@admin_required
+def admin():
+    return render_template('admin.html')
+
+@app.route('/admin/users')
+@login_required
+@admin_required
+def admin_users():
+    users = User.query.all()
+    return render_template('admin_users.html', users=users)
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():

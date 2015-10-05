@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block page_content %}
+<h3>Admin Control Panel: Users</h3>
+<ul>
+    <li><a href="{{ url_for('admin') }}">Admin Panel</a></li>
+    <li><a href="{{ url_for('admin_users') }}">Users</a></li>
+    <li><a href="{{ url_for('week', week_id=1) }}">Week 1</a></li>
+</ul>
+
+<table class='table table-striped'>
+    <tr>
+        <th>ID</th>
+        <th>Username</th>
+        <th>Admin Status</th>
+    </tr>
+    {% for user in users %}
+    <tr>
+        <td>{{ user.id }}</td>
+        <td>{{ user.username }}</td>
+        <td>{{ user.admin }}</td>
+    </tr>
+    {% endfor %}
+</table>
+
+{% endblock %}
