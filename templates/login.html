@@ -5,11 +5,14 @@
     <form 
         method="POST" 
         action="{{ url_for('login') }}" 
-        role="form">
+        role="form"
+        class="form-signin"
+        style="max-width: 300px; margin: 0 auto;">
+        <h2 class="form-signin-heading text-center">Please login</h2>
         {{ form.csrf_token }}
-        <div class="form-group">{{ form.username.label }}: {{form.username() }}</div>
-        <div class="form-group">{{ form.password.label }}: {{form.password() }}</div>
-        <button type="submit" class="btn btn-default">Submit</button>
+        <div >{{ form.username(class="form-control", placeholder="Username") }}</div>
+        <div >{{ form.password(class="form-control", placeholder="Password") }}</div>
+        <button type="submit" class="btn btn-primary btn-block" style="margin-top: 15px;">Submit</button>
     </form>
 </div>
 

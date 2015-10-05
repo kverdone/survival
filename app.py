@@ -106,6 +106,7 @@ def login():
             db.session.add(user)
             db.session.commit()'''
         if user and bcrypt.check_password_hash(user.password, password):
+            # can pass remember=True in login_user() function
             login_user(user)
             flash('You have logged in.', 'success')
             return redirect(url_for('index'))
