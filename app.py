@@ -62,7 +62,6 @@ def user(name):
 
 @app.route('/week/<int:week_id>')
 @login_required
-@admin_required
 def week(week_id):
     return render_template('week.html')
 
@@ -87,6 +86,8 @@ def login():
 
     form = LoginForm(request.form)
 
+    next_page = request.values.get('next')
+
     if request.method == 'POST' and form.validate():
         username = request.form.get('username')
         password = request.form.get('password')
@@ -109,7 +110,7 @@ def login():
             # can pass remember=True in login_user() function
             login_user(user)
             flash('You have logged in.', 'success')
-            return redirect(url_for('index'))
+            return redirect(next_page)
 
     if form.errors:
         flash(form.errors, 'danger')
