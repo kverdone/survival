@@ -3,6 +3,8 @@ from flask import Flask, render_template, redirect, url_for, g, request, flash
 from flask.ext.sqlalchemy import SQLAlchemy
 from flask.ext.bcrypt import Bcrypt
 from flask.ext.login import LoginManager, current_user, login_user, logout_user, login_required
+from flask_admin import Admin
+#from flask_admin import helpers, expose
 from flask_admin.contrib.sqla import ModelView
 
 from config import config
@@ -23,10 +25,13 @@ db = SQLAlchemy(app)
 from models import *
 from forms import *
 
-###############################
-# MODELS
-###############################
+admin = Admin(app, name='Survival Admin', template_mode='bootstrap3')
+admin.add_view(ModelView(User, db.session))
 
+###############################
+# MODELS/VIEW CLASSES
+###############################
+#class MyAdminIndexView(admin.AdminIndexView)
 
 ###############################
 # HELPER FUNCTIONS
