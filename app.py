@@ -3,8 +3,8 @@ from flask import Flask, render_template, redirect, url_for, g, request, flash
 from flask.ext.sqlalchemy import SQLAlchemy
 from flask.ext.bcrypt import Bcrypt
 from flask.ext.login import LoginManager, current_user, login_user, logout_user, login_required
-from flask_admin import Admin
-#from flask_admin import helpers, expose
+from flask_admin import Admin, expose, AdminIndexView
+from flask_admin import expose
 from flask_admin.contrib.sqla import ModelView
 
 from config import config
@@ -25,13 +25,31 @@ db = SQLAlchemy(app)
 from models import *
 from forms import *
 
-admin = Admin(app, name='Survival Admin', template_mode='bootstrap3')
-admin.add_view(ModelView(User, db.session))
 
 ###############################
 # MODELS/VIEW CLASSES
 ###############################
-#class MyAdminIndexView(admin.AdminIndexView)
+class MyModelView(ModelView):
+
+    def is_accessible(self):
+        return current_user.is_admin()
+
+    def inaccessible_callback(self, name, **kwargs):
+        # redirect to login page if user doesn't have access
+        return redirect(url_for('index', next=request.url))
+
+class MyAdminIndexView(AdminIndexView):
+    @expose('/')
+    def index(self):
+        if not current_user.is_admin():
+            flash('You are not an admin.')
+            return redirect(url_for('index')) 
+        #return super(MyAdminIndexView, self).index()
+        return self.render('admin_index.html')
+
+admin = Admin(app, name='Survival Admin', index_view=MyAdminIndexView(), template_mode='bootstrap3')
+admin.add_view(MyModelView(User, db.session))
+
 
 ###############################
 # HELPER FUNCTIONS
