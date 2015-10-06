@@ -42,10 +42,19 @@ def admin_required(f):
         if current_user.is_admin():
             return f(*args, **kwargs)
         else:
-            flash('You do not have permission.')
+            flash('You are not an admin.')
             return redirect(url_for('index')) 
     return wrap
 
+def verification_required(f):
+    @wraps(f)
+    def wrap(*args, **kwargs):
+        if current_user.is_verified():
+            return f(*args, **kwargs)
+        else:
+            flash('You are not verified.')
+            return redirect(url_for('index')) 
+    return wrap
 
 ###############################
 # ROUTES
@@ -62,6 +71,7 @@ def user(name):
 
 @app.route('/week/<int:week_id>')
 @login_required
+@verification_required
 def week(week_id):
     return render_template('week.html')
 
