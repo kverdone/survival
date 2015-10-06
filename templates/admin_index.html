@@ -1,6 +1,13 @@
 {% extends 'admin/master.html' %}
 
+{% block brand %}
+    <a class="navbar-brand" href="{{ url_for('index') }}">Survival</a>
+{% endblock %}
 
 {% block body %}
+
+<!--<a href="{{ url_for('index') }}" class="btn btn-default">Survival Homepage</a>-->
+
 <h1>Here's the index now</h1>
+
 {% endblock %}
