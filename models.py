@@ -45,3 +45,95 @@ class User(db.Model):
  
     def get_id(self):
         return unicode(self.id)
+
+class Season(db.Model):
+    __tablename__ = 'seasons'
+
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String, nullable=False)
+    season = db.Column(db.String, nullable=False)
+    active = db.Column(db.Boolean, nullable=False)
+    '''players = db.relationship('Player', backref='user')'''
+
+    def __init__(self, name=None, season=None, active=False):
+        self.name = name
+        self.season = season
+        self.active = active
+
+    def __repr__(self):
+        return '<Season #{}>\t{}\t{}\t{}'.format(self.id, self.name, self.season, self.active)
+
+    def is_active(self):
+        return self.active
+
+
+class Week(db.Model):
+    __tablename__ = 'weeks'
+
+    id = db.Column(db.Integer, primary_key=True)
+    week_number = db.Column(db.Integer, nullable=False)
+    active = db.Column(db.Boolean, nullable=False)
+    '''players = db.relationship('Player', backref='user')'''
+
+    def __init__(self, week_number=None, active=False):
+        self.week_number = name
+        self.active = active
+
+    def __repr__(self):
+        return '<Season #{}>\t{}\t{}\t{}'.format(self.id, self.name, self.season, self.active)
+
+    def is_active(self):
+        return self.active
+
+class Game(db.Model):
+    __tablename__ = 'games'
+
+    id = db.Column(db.Integer, primary_key=True)
+    '''week_id = db.relationship...'''
+    week_number = db.Column(db.Integer, nullable=False)
+    active = db.Column(db.Boolean, nullable=False, default=False)
+    home_team_id = db.Column(db.Integer, nullable=False)
+    away_team_id = db.Column(db.Integer, nullable=False)
+    home_team_score = db.Column(db.Integer, default=None)
+    away_team_score = db.Column(db.Integer, default=None)
+    winner_id = db.Column(db.Integer, default=None)
+    '''players = db.relationship('Player', backref='user')'''
+
+    def __init__(self, week_number=None, active=False, home_team_id=None, away_team_id=None):
+        self.week_number = name
+        self.active = active
+        self.home_team_id = home_team_id
+        self.away_team_id = away_team_id
+
+    def __repr__(self):
+        return '<Game #{}>\t{}\t{}\t{}'.format(self.id, self.name, self.season, self.active)
+
+    def is_active(self):
+        return self.active
+
+    def get_winner(self):
+        if self.home_team_score and self.away_team_score:
+            if self.home_team_score == self.away_team_score:
+                self.winner_id = -1
+
+            if self.home_team_score > self.away_team_score:
+                self.winner_id = self.home_team_id
+
+            else:
+                self.winner_id = self.away_team_id
+
+            return self.winner_id
+
+        else:
+            return None
+
+
+
+
+
+
+
+
+
+
+
