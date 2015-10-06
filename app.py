@@ -1,7 +1,10 @@
 from flask import Flask, render_template, redirect, url_for, g, request, flash
+
 from flask.ext.sqlalchemy import SQLAlchemy
 from flask.ext.bcrypt import Bcrypt
 from flask.ext.login import LoginManager, current_user, login_user, logout_user, login_required
+from flask_admin.contrib.sqla import ModelView
+
 from config import config
 from functools import wraps
 
@@ -59,9 +62,7 @@ def verification_required(f):
 ###############################
 # ROUTES
 ###############################
-
 @app.route('/')
-@login_required
 def index():
     return render_template('index.html')
 
@@ -75,18 +76,18 @@ def user(name):
 def week(week_id):
     return render_template('week.html')
 
-@app.route('/admin')
+@app.route('/my_admin')
 @login_required
 @admin_required
-def admin():
-    return render_template('admin.html')
+def my_admin():
+    return render_template('my_admin.html')
 
-@app.route('/admin/users')
+@app.route('/my_admin/users')
 @login_required
 @admin_required
-def admin_users():
+def my_admin_users():
     users = User.query.all()
-    return render_template('admin_users.html', users=users)
+    return render_template('my_admin_users.html', users=users)
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -96,7 +97,7 @@ def login():
 
     form = LoginForm(request.form)
 
-    next_page = request.values.get('next')
+    next_page = request.values.get('next','/')
 
     if request.method == 'POST' and form.validate():
         username = request.form.get('username')

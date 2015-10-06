@@ -2,13 +2,22 @@
 
 {% block page_content %}
 
-<h1>Hello World!</h1>
-{% if current_user.is_authenticated() %}
+<h1>BFIG Survival</h1>
+
+{% if current_user.is_authenticated %}
     <h3>Hey {{ current_user.username }}</h3>
-    <a href="{{ url_for('logout') }}">Logout</a>
+
+    {% if current_user.is_verified() %}
+    <p>This content is just for verified people.</p>
+    {% else %}
+    <p>You are not verified. Please wait for verificaiton from an admin.</p>
+    {% endif %}
+
 {% else %}
-    Click here to <a href="{{ url_for('login') }}">login</a>
+    <h3>Hey there anon</h3>
+    <p>Login to see stuff</p>
 {% endif %}
+
 
 
 {% endblock %}
