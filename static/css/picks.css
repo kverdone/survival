@@ -5,7 +5,7 @@
 
 label.team-choice {
   cursor: pointer;
-  float: left;
+  /*float: left;*/
 }
 
 label > div > input.team-radio:checked ~ * {
@@ -52,14 +52,7 @@ img.logo {
   filter: grayscale(100%);
   -webkit-filter: grayscale(100%);
 }
-/*div.team-choice {
-  vertical-align: middle;
-  display: inline;
-  float: left;
-}*/
-/*div.team-div {
-  margin-top: 100px;
-}*/
+
 span.team-name {
   /*vertical-align: middle;
   display: inline-block;*/

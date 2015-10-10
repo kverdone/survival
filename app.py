@@ -126,20 +126,8 @@ def login():
         username = request.form.get('username')
         password = request.form.get('password')
 
-        '''
-        try:
-            User.try_login(username, password)
-        except:
-            flash('Invalid credentials.')
-            return render_template('login.html', form=form)
-        '''
-
         user = User.query.filter_by(username=username).first()
 
-        '''if not user:
-            user = User(username, password)
-            db.session.add(user)
-            db.session.commit()'''
         if user and bcrypt.check_password_hash(user.password, password):
             # can pass remember=True in login_user() function
             login_user(user)
@@ -182,13 +170,6 @@ def picks_tn(week_number):
         print game
 
     print tn_games
-
-
-    '''tn_teams = set(x.home_team_id for x in tn) | set(x.away_team_id for x in tn)
-    #print tn_teams
-    tn_form = PickForm()
-    tn_form.games.choices = [(x,x) for x in tn_teams]
-    tn_form.games.name = 'tn'''  
 
     return render_template('picks_tn.html', tn_form=tn_form, week_number=week_number, tn_games=tn_games)
 
@@ -233,11 +214,6 @@ def picks(week_number):
                 }
 
         games[time_slot].append(to_add)
-    '''
-        games[time_slot].append(to_add)
-        tn_games.append((game.home_team_id, home_team, home_team.city_short))
-        tn_games.append((game.away_team_id, away_team, away_team.city_short))
-    '''
     
 
     return render_template('picks.html', week_number=week_number, games=games)

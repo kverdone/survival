@@ -2,32 +2,29 @@
 
 {% block page_content %}
 
-{% for key, value in games.iteritems() %}
-  {{ key }} --- {{ value }} <br>
-  {% endfor %}
 
 <div class="col-xs-12">
  	<form>
  		<h3>Thursday Night Game</h3><br>
  		{% for game in games['TN'] %}
  		<div class="row">
- 		<div class="col-xs-5">
- 			<label class="radio-inline" style="float:right">
- 				<input id="{{ game['away_id'] }}" name="TN" type="radio" value="{{ game['away_id'] }}" class="team-radio" required />
- 				<span class="team-name">{{ game['away_name'] }}</span>
- 				<img src="{{ url_for('static', filename='images/logos/{}.png'.format(game['away_short'])) }}" class="logo">
- 			</label>
- 		</div>
- 		<div class="col-xs-1" style="display: table-cell; text-align: center; vertical-align: middle">
- 				<i class="fa fa-at fa-2x"></i>
- 		</div>
- 		<div class="col-xs-5">
- 			<label class="radio-inline" style="float:left">	
- 				<input id="{{ game['home_id'] }}" name="TN" type="radio" value="{{ game['home_id'] }}" class="team-radio" required />
- 				<img src="{{ url_for('static', filename='images/logos/{}.png'.format(game['home_short'])) }}" class="logo">
- 				<span class="team-name">{{ game['home_name'] }}</span>
-			</label>
-		</div>
+	 		<div class="col-xs-5">
+	 			<label class="radio-inline" style="float:right">
+	 				<input id="{{ game['away_id'] }}" name="TN" type="radio" value="{{ game['away_id'] }}" class="team-radio" required />
+	 				<span class="team-name">{{ game['away_name'] }}</span>
+	 				<img src="{{ url_for('static', filename='images/logos/{}.png'.format(game['away_short'])) }}" class="logo">
+	 			</label>
+	 		</div>
+	 		<div class="col-xs-1" style="display: table-cell; text-align: center; vertical-align: middle">
+	 				<i class="fa fa-at fa-2x"></i>
+	 		</div>
+	 		<div class="col-xs-5">
+	 			<label class="radio-inline" style="float:left">	
+	 				<input id="{{ game['home_id'] }}" name="TN" type="radio" value="{{ game['home_id'] }}" class="team-radio" required />
+	 				<img src="{{ url_for('static', filename='images/logos/{}.png'.format(game['home_short'])) }}" class="logo">
+	 				<span class="team-name">{{ game['home_name'] }}</span>
+				</label>
+			</div>
 		</div>
  		{% endfor %}
  		<br>
@@ -93,8 +90,12 @@
 </div>
 
 
-
-
+<br><br><br><br>
+<p>
+{% for key, value in games.iteritems() %}
+  {{ key }} --- {{ value }} <br>
+  {% endfor %}
+</p>
 	
 	<form>
 		<h3>Sunday Morning Games</h3>
