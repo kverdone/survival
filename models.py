@@ -46,6 +46,7 @@ class User(db.Model):
     def get_id(self):
         return unicode(self.id)
 
+
 class Season(db.Model):
     __tablename__ = 'seasons'
 
@@ -76,14 +77,15 @@ class Week(db.Model):
     '''players = db.relationship('Player', backref='user')'''
 
     def __init__(self, week_number=None, active=False):
-        self.week_number = name
+        self.week_number = week_number
         self.active = active
 
     def __repr__(self):
-        return '<Season #{}>\t{}\t{}\t{}'.format(self.id, self.name, self.season, self.active)
+        return '<Season #{}>\t{}\t{}\t{}'.format(self.id, self.week_number, self.season, self.active)
 
     def is_active(self):
         return self.active
+
 
 class Game(db.Model):
     __tablename__ = 'games'
@@ -97,16 +99,19 @@ class Game(db.Model):
     home_team_score = db.Column(db.Integer, default=None)
     away_team_score = db.Column(db.Integer, default=None)
     winner_id = db.Column(db.Integer, default=None)
+    time_slot = db.Column(db.String, nullable=False)
     '''players = db.relationship('Player', backref='user')'''
 
-    def __init__(self, week_number=None, active=False, home_team_id=None, away_team_id=None):
-        self.week_number = name
+    def __init__(self, week_number=None, active=False, home_team_id=None, away_team_id=None, time_slot=None):
+        self.week_number = week_number
         self.active = active
         self.home_team_id = home_team_id
         self.away_team_id = away_team_id
+        self.time_slot = time_slot
 
     def __repr__(self):
-        return '<Game #{}>\t{}\t{}\t{}'.format(self.id, self.name, self.season, self.active)
+        #return str([self.id, self.week_number, self.active, self.home_team_id, self.away_team_id, self.time_slot])
+        return str(vars(self))
 
     def is_active(self):
         return self.active
@@ -128,9 +133,22 @@ class Game(db.Model):
             return None
 
 
+class Team(db.Model):
+    __tablename__ = 'teams'
 
+    id = db.Column(db.Integer, primary_key=True)
+    city_short = db.Column(db.String, nullable=False)
+    city_long = db.Column(db.String, nullable=False)
+    team_long = db.Column(db.String, nullable=False)
 
+    def __init__(self, city_short, city_long, team_long):
+        self.city_short = city_short
+        self.city_long = city_long
+        self.team_long = team_long
 
+    def __repr__(self):
+        #return '{} - {} {} {}'.format(id, self.city_short, self.city_long, self.team_long)
+        return '{} {}'.format(self.city_long, self.team_long)
 
 
 

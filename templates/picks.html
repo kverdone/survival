@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block page_content %}
+
+
+
+
+    <form>
+        <label for="games-0" class="radio-inline"><input id="games-0" name="games" type="radio" value="1" required>a</label>
+        <label for="games-1" class="radio-inline">b<span>    </span></label><input id="games-1" name="games" type="radio" value="2">
+        <br>
+        <input id="games-2" name="games-1" type="radio" value="3"> 
+        <label for="games-2">c</label>
+        <input id="games-3" name="games-1" type="radio" value="4"> 
+        <label for="games-3">d</label> <br>
+        <button type="submit" class="btn btn-default">Submit</button>
+    </form>
+    
+    <br><br><br><br>
+    
+    <form>
+        {% for game in tn_games %}
+            <label class="radio-inline">
+                <input id="game-{{ loop.index0  }}" name="tn" type="radio" value="{{ game[0] }}" required />
+                {{ game[1] }}
+            </label>
+            {% if loop.index0 % 2 == 1 %}
+                <br>
+            {% endif %}
+        {% endfor %}
+        <br><br>
+        <button type="submit" class="btn btn-primary">Pick'em!</button>
+    </form>
+
+{% endblock %}

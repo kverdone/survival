@@ -157,6 +157,41 @@ def logout():
     logout_user()
     return redirect(url_for('index'))
 
+@app.route('/picks/<int:week_number>/tn')
+@login_required
+@verification_required
+def picks_tn(week_number):
+    
+    tn = Game.query.filter(Game.week_number == week_number).filter(Game.time_slot == 'SM').all()
+
+    tn_form = TNForm()
+    tn_form.tn_games.choices = []
+    tn_games = []
+
+    for game in tn:
+        home_team = Team.query.filter(Team.id == game.home_team_id).all()[0]
+        away_team = Team.query.filter(Team.id == game.away_team_id).all()[0]
+        tn_form.tn_games.choices.append((game.home_team_id, home_team))
+        tn_form.tn_games.choices.append((game.away_team_id, away_team))
+        tn_games.append((game.home_team_id, home_team))
+        tn_games.append((game.away_team_id, away_team))
+
+    print tn_form.tn_games.choices
+
+    for game in tn_form.tn_games:
+        print game
+
+    print tn_games
+
+
+    '''tn_teams = set(x.home_team_id for x in tn) | set(x.away_team_id for x in tn)
+    #print tn_teams
+    tn_form = PickForm()
+    tn_form.games.choices = [(x,x) for x in tn_teams]
+    tn_form.games.name = 'tn'''  
+
+    return render_template('picks.html', tn_form=tn_form, week_number=week_number, tn_games=tn_games)
+
 
 
 

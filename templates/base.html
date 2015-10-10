@@ -9,6 +9,7 @@
         $('.dropdown-toggle').dropdown()
       });
     </script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='picks.css') }}">
 </head>
 
 <body style="background-color: #eee">
@@ -25,7 +26,10 @@
             {% if current_user.is_active and current_user.is_verified() %}
             <li class="active"><a href="{{ url_for('week', week_id=1) }}">Week 1</a></li>
             {% endif %}
-            
+
+          </ul>
+          <ul class="nav navbar-nav navbar-right">
+
             {% if current_user.is_active and current_user.is_admin() %}
             <li class="active"><a href="{{ url_for('admin.index') }}">Admin</a></li>            
 
@@ -39,9 +43,6 @@
             </li>
             {% endif %}
 
-          </ul>
-          <ul class="nav navbar-nav navbar-right">
-
             {% if current_user.is_active %}
             <li class="active"><a href="{{ url_for('logout') }}">Logout</a></li>
             {% else %}
@@ -54,7 +55,6 @@
     </nav>
 
     <div class="container">
-    <br>
     <div>
       {% for category, message in get_flashed_messages(with_categories=true) %}
         <div class="alert alert-{{category}} alert-dismissable">
