@@ -1,0 +1,72 @@
+.team-radio {
+  visibility: hidden;
+  position: absolute;
+}
+
+label.team-choice {
+  cursor: pointer;
+  float: left;
+}
+
+label > div > input.team-radio:checked ~ * {
+  /*border: 2px solid #f00;
+  border-radius: 5px;*/
+  
+  font-weight: 900;
+  filter: grayscale(0%);
+  -webkit-filter: grayscale(0%);
+}
+
+label > div > input.team-radio:checked + * {
+  /*border: 2px solid #f00;
+  border-radius: 5px;*/
+  
+  font-weight: 900;
+  filter: grayscale(0%);
+  -webkit-filter: grayscale(0%);
+}
+
+label > input.team-radio:checked ~ * {
+  /*border: 2px solid #f00;
+  border-radius: 5px;*/
+  
+  font-weight: 900;
+  filter: grayscale(0%);
+  -webkit-filter: grayscale(0%);
+}
+
+label > input.team-radio:checked + * {
+  /*border: 2px solid #f00;
+  border-radius: 5px;*/
+  
+  font-weight: 900;
+  filter: grayscale(0%);
+  -webkit-filter: grayscale(0%);
+}
+
+
+img.logo {
+  width: auto;
+  height: 60px;
+  vertical-align: middle;
+  filter: grayscale(100%);
+  -webkit-filter: grayscale(100%);
+}
+/*div.team-choice {
+  vertical-align: middle;
+  display: inline;
+  float: left;
+}*/
+/*div.team-div {
+  margin-top: 100px;
+}*/
+span.team-name {
+  /*vertical-align: middle;
+  display: inline-block;*/
+  font-weight: normal;
+}
+
+div.game {
+  display: flex;
+  align-items: center;
+}

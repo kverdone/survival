@@ -173,8 +173,8 @@ def picks_tn(week_number):
         away_team = Team.query.filter(Team.id == game.away_team_id).all()[0]
         tn_form.tn_games.choices.append((game.home_team_id, home_team))
         tn_form.tn_games.choices.append((game.away_team_id, away_team))
-        tn_games.append((game.home_team_id, home_team))
-        tn_games.append((game.away_team_id, away_team))
+        tn_games.append((game.home_team_id, home_team, home_team.city_short))
+        tn_games.append((game.away_team_id, away_team, away_team.city_short))
 
     print tn_form.tn_games.choices
 
@@ -190,9 +190,57 @@ def picks_tn(week_number):
     tn_form.games.choices = [(x,x) for x in tn_teams]
     tn_form.games.name = 'tn'''  
 
-    return render_template('picks.html', tn_form=tn_form, week_number=week_number, tn_games=tn_games)
+    return render_template('picks_tn.html', tn_form=tn_form, week_number=week_number, tn_games=tn_games)
 
 
+@app.route('/picks/<int:week_number>')
+@login_required
+@verification_required
+def picks(week_number):
+    
+    tn = Game.query.filter(Game.week_number == week_number).all()
+
+    slot_map = {
+                'TN': 'Thursday Night Game',
+                'SM': 'Sunday Morning Games',
+                'SA': 'Sunday Afternoon Games',
+                'SN': 'Sunday Night Games',
+                'MN': 'Monday Night Games'
+            }
+
+    games = {
+                'TN': [], 
+                'SM': [],
+                'SA': [],
+                'SN': [],
+                'MN': []
+            }
+
+    for game in tn:
+        time_slot = game.time_slot
+        home_team = Team.query.filter(Team.id == game.home_team_id).all()[0]
+        away_team = Team.query.filter(Team.id == game.away_team_id).all()[0]
+        
+        to_add = {
+                    'away_id': away_team.id,
+                    'away_short': away_team.city_short,
+                    'away_name': away_team,
+                    'home_id': home_team.id,
+                    'home_short': home_team.city_short,
+                    'home_name': home_team,
+                    'game_id': game.id,
+                    'slot': slot_map[time_slot]
+                }
+
+        games[time_slot].append(to_add)
+    '''
+        games[time_slot].append(to_add)
+        tn_games.append((game.home_team_id, home_team, home_team.city_short))
+        tn_games.append((game.away_team_id, away_team, away_team.city_short))
+    '''
+    
+
+    return render_template('picks.html', week_number=week_number, games=games)
 
 
 

@@ -2,34 +2,182 @@
 
 {% block page_content %}
 
+{% for key, value in games.iteritems() %}
+  {{ key }} --- {{ value }} <br>
+  {% endfor %}
+
+<div class="col-xs-12">
+ 	<form>
+ 		<h3>Thursday Night Game</h3><br>
+ 		{% for game in games['TN'] %}
+ 		<div class="row">
+ 		<div class="col-xs-5">
+ 			<label class="radio-inline" style="float:right">
+ 				<input id="{{ game['away_id'] }}" name="TN" type="radio" value="{{ game['away_id'] }}" class="team-radio" required />
+ 				<span class="team-name">{{ game['away_name'] }}</span>
+ 				<img src="{{ url_for('static', filename='images/logos/{}.png'.format(game['away_short'])) }}" class="logo">
+ 			</label>
+ 		</div>
+ 		<div class="col-xs-1" style="display: table-cell; text-align: center; vertical-align: middle">
+ 				<i class="fa fa-at fa-2x"></i>
+ 		</div>
+ 		<div class="col-xs-5">
+ 			<label class="radio-inline" style="float:left">	
+ 				<input id="{{ game['home_id'] }}" name="TN" type="radio" value="{{ game['home_id'] }}" class="team-radio" required />
+ 				<img src="{{ url_for('static', filename='images/logos/{}.png'.format(game['home_short'])) }}" class="logo">
+ 				<span class="team-name">{{ game['home_name'] }}</span>
+			</label>
+		</div>
+		</div>
+ 		{% endfor %}
+ 		<br>
+
+ 		<h3>Sunday Morning Games</h3><br>
+ 		{% for game in games['SM'] %}
+ 		<div class="row">
+ 		<div class="col-xs-5">
+ 			<label class="radio-inline" style="float:right">
+ 				<input id="{{ game['away_id'] }}" name="SM" type="radio" value="{{ game['away_id'] }}" class="team-radio" required />
+ 				<span class="team-name">{{ game['away_name'] }}</span>
+ 				<img src="{{ url_for('static', filename='images/logos/{}.png'.format(game['away_short'])) }}" class="logo">
+ 			</label>
+ 		</div>
+ 		<div class="col-xs-1" style="text-align: center; vertical-align: middle">
+ 				<i class="fa fa-at fa-2x"></i>
+ 		</div>
+ 		<div class="col-xs-5">
+ 			<label class="radio-inline" style="float:left">	
+ 				<input id="{{ game['home_id'] }}" name="SM" type="radio" value="{{ game['home_id'] }}" class="team-radio" required />
+ 				<img src="{{ url_for('static', filename='images/logos/{}.png'.format(game['home_short'])) }}" class="logo">
+ 				<span class="team-name">{{ game['home_name'] }}</span>
+			</label>
+		</div>
+		</div>
+ 		{% endfor %}
+ 		<br>
+
+ 		<h3>Sunday Afternoon Games</h3><br>
+ 		{% for game in games['SA'] %}
+ 		<div class="row">
+ 		<div class="col-xs-5">
+ 			<label class="radio-inline" style="float:right">
+ 				<input id="{{ game['away_id'] }}" name="SA" type="radio" value="{{ game['away_id'] }}" class="team-radio" required />
+ 				<span class="team-name">{{ game['away_name'] }}</span>
+ 				<img src="{{ url_for('static', filename='images/logos/{}.png'.format(game['away_short'])) }}" class="logo">
+ 			</label>
+ 		</div>
+ 		<div class="col-xs-1" style="text-align: center; vertical-align: middle">
+ 				<i class="fa fa-at fa-2x"></i>
+ 		</div>
+ 		<div class="col-xs-5">
+ 			<label class="radio-inline" style="float:left">	
+ 				<input id="{{ game['home_id'] }}" name="SA" type="radio" value="{{ game['home_id'] }}" class="team-radio" required />
+ 				<img src="{{ url_for('static', filename='images/logos/{}.png'.format(game['home_short'])) }}" class="logo">
+ 				<span class="team-name">{{ game['home_name'] }}</span>
+			</label>
+		</div>
+		</div>
+ 		{% endfor %}
+ 		<br>
 
 
 
-    <form>
-        <label for="games-0" class="radio-inline"><input id="games-0" name="games" type="radio" value="1" required>a</label>
-        <label for="games-1" class="radio-inline">b<span>    </span></label><input id="games-1" name="games" type="radio" value="2">
-        <br>
-        <input id="games-2" name="games-1" type="radio" value="3"> 
-        <label for="games-2">c</label>
-        <input id="games-3" name="games-1" type="radio" value="4"> 
-        <label for="games-3">d</label> <br>
-        <button type="submit" class="btn btn-default">Submit</button>
-    </form>
-    
-    <br><br><br><br>
-    
-    <form>
-        {% for game in tn_games %}
-            <label class="radio-inline">
-                <input id="game-{{ loop.index0  }}" name="tn" type="radio" value="{{ game[0] }}" required />
-                {{ game[1] }}
-            </label>
-            {% if loop.index0 % 2 == 1 %}
-                <br>
-            {% endif %}
-        {% endfor %}
-        <br><br>
-        <button type="submit" class="btn btn-primary">Pick'em!</button>
-    </form>
+
+
+
+
+
+ 		<br><br>
+ 		<button type="submit" class="btn btn-primary">Pick'em!</button>
+	</form>
+</div>
+
+
+
+
+	
+	<form>
+		<h3>Sunday Morning Games</h3>
+		{% for game in tn_games %}
+			<label class="radio-inline">
+				<input id="game-{{ loop.index0  }}" name="tn" type="radio" value="{{ game[0] }}" required class="team-radio"/>
+				
+				{% if loop.index0 % 2 == 0 %}
+				<span class="team-name">{{ game[1] }}</span>
+				{% endif %}
+				
+				<img src="{{ url_for('static', filename='images/logos/{}.png'.format(game[2])) }}" class="logo">
+
+				{% if loop.index0 % 2 == 1 %}
+				<span class="team-name">{{ game[1] }}</span>
+				{% endif %}
+
+			</label>
+			{% if loop.index0 % 2 == 1 %}
+				<br>
+			{% endif %}
+		{% endfor %}
+		<br><br>
+		<button type="submit" class="btn btn-primary">Pick'em!</button>
+	</form>
+	
+	<br><br><br><br>
+<form>
+<div class="game">
+  <label for="q1-y" class="team-choice">
+	<div class="team-div">
+	  <input type="radio" name="q1" id="q1-y" value="1" class="team-radio" />
+	  <span class="team-name">Houston Texans</span>
+	  <img src="http://www.allsportstalk.net/wp-content/uploads/houston-texans-200.gif" class="logo">
+	</div>
+  </label>
+
+  <span>@</span>
+  <label for="q1-n" class="team-choice">
+	<div class="team-div">
+	  <input type="radio" name="q1" id="q1-n" value="2" class="team-radio" />
+	  <img src="http://www.circlecityclassic.com/wp-content/uploads/2014/07/Indianopolis-Colts-logo-200x200.png" class="logo">
+	  <span class="team-name">Indianapolis Colts</span>
+	</div>
+  </label>
+</div>
+
+<div class="game">
+  <label for="q2-y" class="team-choice">
+	<div class="team-div">
+	  <input type="radio" name="q1" id="q2-y" value="3" class="team-radio" />
+	  <span class="team-name">Miami Dolphins</span>
+	  <img src="http://predictpick.nfl.com/images/teams/full/logos/full/mia.png" class="logo">
+	</div>
+  </label>
+
+  <span>@</span>
+  <label for="q2-n" class="team-choice">
+	<div class="team-div">
+
+	  <input type="radio" name="q1" id="q2-n" value="4" class="team-radio" />
+	  <img src="http://s3media.247sports.com/Uploads/Assets/612/238/3238612.png" class="logo">
+	  <span class="team-name">Indianapolis Colts</span>
+	</div>
+  </label>
+</div>
+<button type="submit" class="btn btn-primary">Pick'em!</button>
+</form>
+
+
+<br><br><br><br>
+
+	<form>
+		<label for="games-0" class="radio-inline"><input id="games-0" name="games" type="radio" value="1" required>a</label>
+		<label for="games-1" class="radio-inline">b<span>    </span></label><input id="games-1" name="games" type="radio" value="2">
+		<br>
+		<input id="games-2" name="games-1" type="radio" value="3"> 
+		<label for="games-2">c</label>
+		<input id="games-3" name="games-1" type="radio" value="4"> 
+		<label for="games-3">d</label> <br>
+		<button type="submit" class="btn btn-default">Submit</button>
+	</form>
+
+
 
 {% endblock %}
