@@ -1,4 +1,4 @@
-from flask import Flask, render_template, redirect, url_for, g, request, flash
+from flask import Flask, render_template, redirect, url_for, g, request, flash, Markup
 
 from flask.ext.sqlalchemy import SQLAlchemy
 from flask.ext.bcrypt import Bcrypt
@@ -68,7 +68,7 @@ def admin_required(f):
         if current_user.is_admin():
             return f(*args, **kwargs)
         else:
-            flash('You are not an admin.')
+            flash('You are not an admin.', 'danger')
             return redirect(url_for('index')) 
     return wrap
 
@@ -78,7 +78,7 @@ def verification_required(f):
         if current_user.is_verified():
             return f(*args, **kwargs)
         else:
-            flash('You are not verified.')
+            flash('You are not verified.', 'warning')
             return redirect(url_for('index')) 
     return wrap
 
@@ -115,7 +115,7 @@ def my_admin_users():
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if current_user.is_authenticated:
-        flash('You are already logged in.')
+        flash('You are already logged in.', 'info')
         return redirect(url_for('index'))
 
     form = LoginForm(request.form)
@@ -174,11 +174,22 @@ def picks_tn(week_number):
     return render_template('picks_tn.html', tn_form=tn_form, week_number=week_number, tn_games=tn_games)
 
 
-@app.route('/picks/<int:week_number>')
+@app.route('/picks/<int:week_number>', methods=['GET', 'POST'])
 @login_required
 @verification_required
 def picks(week_number):
     
+    if request.method == 'POST':
+        #print request.form
+        picks = [int(team_id) for _, team_id in request.form.items()]
+        #print picks, type(picks)
+        teams = Team.query.filter(Team.id.in_(picks)).all()
+        teams = map(Team.team_name, teams)
+        message = Markup('Your picks:<br>' + ', '.join(teams))
+        flash(message, 'success')
+        return redirect('/picks/1?submitted')
+
+
     tn = Game.query.filter(Game.week_number == week_number).all()
 
     slot_map = {

@@ -150,6 +150,9 @@ class Team(db.Model):
         #return '{} - {} {} {}'.format(id, self.city_short, self.city_long, self.team_long)
         return '{} {}'.format(self.city_long, self.team_long)
 
+    def team_name(self):
+        return '{} {}'.format(self.city_long, self.team_long)
+
 
 
 
