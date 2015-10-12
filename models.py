@@ -17,6 +17,7 @@ class User(db.Model):
     '''email = db.Column(db.String, nullable=False, unique=True)
     created_date = db.Column(db.DateTime, nullable=False)
     players = db.relationship('Player', backref='user')'''
+    picks = db.relationship('Pick', backref='users', lazy='dynamic')
 
     def __init__(self, username=None, password=None, admin=False, verified=False):
         self.username = username
@@ -132,6 +133,13 @@ class Game(db.Model):
         else:
             return None
 
+    def get_spread(self):
+        if not (self.home_team_score and self.away_team_score):
+            return None
+        else:
+            winner = max(self.home_team_score, self.away_team_score)
+            loser = min(self.home_team_score, self.away_team_score)
+            return winner - loser
 
 class Team(db.Model):
     __tablename__ = 'teams'
@@ -154,7 +162,16 @@ class Team(db.Model):
         return '{} {}'.format(self.city_long, self.team_long)
 
 
+class Pick(db.Model):
+    __tablename__ = 'picks'
 
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
 
+    def __init__(self, user_id=None):
+        self.user_id = user_id
 
+    def __repr__(self):
+        username = User.query.get(self.user_id).username
+        return '<Pick #{}> by user #{} ({})'.format(self.id, self.user_id, username)
 
